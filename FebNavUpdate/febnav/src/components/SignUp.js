@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 function SignUp() {
   const [userData, setUserData] = useState({
-    id: 1,
     name: "ashish",
     age: 20,
     gender: "Male",
     phoneNo: "3215588954",
-    email: null,
-    role: "TEACHER",
+    email: "ashish@gmail.com",
+    password: "12345",
     address: "korba",
     degree: "B.E",
     specialization: "kuchbhi"
@@ -22,22 +22,26 @@ function SignUp() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(userData);
-    // Reset the form after printing data
-    setUserData({
-      id: 1,
-      name: "",
-      age: 0,
-      gender: "",
-      phoneNo: "",
-      email: "",
-      role: "",
-      address: "",
-      degree: "",
-      specialization: ""
-    });
+    try {
+      const response = await axios.post('http://localhost:8080/users/teacher_signup', userData);
+      console.log(response.data);
+      // Reset the form after successful submission
+      setUserData({
+        name: "ashish",
+        age: 20,
+        gender: "Male",
+        phoneNo: "3215588954",
+        email: "ashish@gmail.com",
+        password: "12345",
+        address: "korba",
+        degree: "B.E",
+        specialization: "kuchbhi"
+      });
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   return (
@@ -93,11 +97,11 @@ function SignUp() {
         />
       </div>
       <div>
-        <label>Role:</label>
+        <label>Password:</label>
         <input
-          type="text"
-          name="role"
-          value={userData.role}
+          type="password"
+          name="password"
+          value={userData.password}
           onChange={handleChange}
           required
         />
